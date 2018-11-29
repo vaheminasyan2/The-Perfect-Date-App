@@ -97,12 +97,11 @@ function ImportEventsData(){
         url: queryURLs.userEvent,
         method: "GET",
     }).then(function (userResponse) {
-        console.log(userResponse);
         console.log(queryURLs.userEvent);
-        // push queryURL 
 
-        for (let i = 0; i < userResponse.events.length; i++) {
-            var event = userResponse.events[i];
+
+        for (let i = 0; i < response.events.length; i++) {
+            var event = response.events[i];
 
             var eventName = event.name.html
             var eventUrl = event.url;
@@ -112,11 +111,11 @@ function ImportEventsData(){
 
             var spaces = "&nbsp;&nbsp;"
 
-            console.log(eventName);
-            console.log(eventUrl);
-            console.log(eventTime);
-            console.log(venueName);
-            console.log(venueCity);
+            //console.log(eventName);
+            //console.log(eventUrl);
+            //console.log(eventTime);
+            //console.log(venueName);
+            //console.log(venueCity);
 
             // BELOW IS AN EXAMPLE FOR RESULTS PAGE
             // var eventListing = "<li>" + eventTime + spaces + "<a href='" + eventUrl + "'>" + eventName + "</a>" + spaces + venueName + " - " + venueCity + "</li>";
@@ -129,12 +128,11 @@ function ImportEventsData(){
             url: queryURLs.friendEvent,
             method: "GET",
         }).then(function (friendResponse) {
-            console.log(friendResponse);
             console.log(queryURLs.friendEvent);
-            // push queryURL 
 
-            for (let i = 0; i < friendResponse.events.length; i++) {
-                var event = friendResponse.events[i];
+
+            for (let i = 0; i < response.events.length; i++) {
+                var event = response.events[i];
 
                 var eventName = event.name.html
                 var eventUrl = event.url;
@@ -144,11 +142,11 @@ function ImportEventsData(){
 
                 var spaces = "&nbsp;&nbsp;"
 
-                console.log(eventName);
-                console.log(eventUrl);
-                console.log(eventTime);
-                console.log(venueName);
-                console.log(venueCity);
+                //console.log(eventName);
+                //console.log(eventUrl);
+                //console.log(eventTime);
+                //console.log(venueName);
+                //console.log(venueCity);
 
                 // BELOW IS AN EXAMPLE FOR RESULTS PAGE
                 // var eventListing = "<li>" + eventTime + spaces + "<a href='" + eventUrl + "'>" + eventName + "</a>" + spaces + venueName + " - " + venueCity + "</li>";

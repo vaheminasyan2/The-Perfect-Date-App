@@ -10,6 +10,7 @@ var config = {
 firebase.initializeApp(config);
 var db = firebase.database();
 
+// Get parameters from URLs to know which user is completing the form
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = window.location.search.substring(1),
         sURLVariables = sPageURL.split('&'),
@@ -76,6 +77,7 @@ $("#foodPlace").change(function () {
 var place = "";
 var date = "";
 
+// Pull "place" and "date" from database
 window.onload = function () {
     db.ref(dataref + "/location").once("value", function (snapshot) {
         place = snapshot.val();
@@ -101,10 +103,10 @@ $(document).ready(function () {
         event.preventDefault();
 
         // Google places API call
-        if ($("#foodPlace").val() === "selectOne") {
+        if ($("#foodPlace").val() === "selectOne" || $("#eventType").val() === "") {
             event.preventDefault();
         }
-        else if ($("#foodPlace").val() === "restaurant") {
+        else if ($("#foodPlace").val() === "restaurant" && $("#restaurant").val() !== "") {
             event.preventDefault();
 
             var query = $("#foodPlace").val() + " " + $("#restaurant").val() + " " + $("#otherFoodPlace").val() + " " + "in " + place;
@@ -126,31 +128,29 @@ $(document).ready(function () {
         db.ref(datarefURLs).child("Restaurant_queryURL").set(googleQueryURL);
 
         // Eventbrite API call
-        event.preventDefault();
-
-        // replace with FB
+        var eventType = $("#eventType").val();
+        //  results for price are either "free" or "paid"...looks like we can't do price range or else it could limit options unnecessarily
+        var price = $("input[name=inlineRadioOptions]:checked").val();
+        var otherKeywords = $("#otherKeywords").val(); //otherKeywords is a string for the "q" parameter
         var date1 = date + "T00:00:00";
         var date2 = date + "T23:59:59";
-
         var token = '5E76NLXTIQ7IVJFI3SNJ'; //Eventbrite API Key
-
-        var eventType = $("#eventType").val();
-
-        var otherKeywords = $("#otherKeywords").val(); //otherKeywords is a string for the "q" parameter
 
         var price = $("input[name=inlineRadioOptions]:checked").val();
         //  results for price are either "free" or "paid"...looks like we can't do price range or else it could limit options unnecessarily
 
-        var eventBriteQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?token=" + token + "&q=" + otherKeywords + "&location.address=" + place + "&start_date.range_start=" + date1 + "&start_date.range_end=" + date2 + "&categories=" + eventType + "&price=" + price + "&expand=venue"; //added venue expansion
+        if (eventType !== "" && $("#foodPlace").val() !== "selectOne") {
+            var eventBriteQueryUrl = "https://www.eventbriteapi.com/v3/events/search/?token=" + token + "&q=" + otherKeywords + "&location.address=" + place + "&start_date.range_start=" + date1 + "&start_date.range_end=" + date2 + "&categories=" + eventType + "&price=" + price + "&expand=venue"; //added venue expansion
 
-        //////////////// Adding Eventbrite URL to DB
-        db.ref(datarefURLs).child("Event_queryURL").set(eventBriteQueryUrl);
+            //////////////// Adding Eventbrite URL to DB
+            db.ref(datarefURLs).child("Event_queryURL").set(eventBriteQueryUrl);
 
-        ////////////// Set status = 1 and go to results page
-        db.ref(datarefURLs + "/status").set(1);
+            ////////////// Set status = 1 and go to results page
+            db.ref(datarefURLs + "/status").set(1);
 
-        ////////////// Navigate away - to results page.
-        window.location.href = "resultPage.html?connkey=" + getUrlParameter('connkey') + "&userid=" + getUrlParameter('userid') + "&friendid=" + getUrlParameter('friendid');
+            ////////////// Navigate away - to results page.
+            window.location.href = "resultPage.html?connkey=" + getUrlParameter('connkey') + "&userid=" + getUrlParameter('userid') + "&friendid=" + getUrlParameter('friendid');
+        }
     });
 });
 
