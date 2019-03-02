@@ -9,15 +9,6 @@ This app utilizes Eventbrite API to find events and Google Places API to find re
 **Home Page**
 ![Homepage](images/homepage.PNG)
 
-**Email Template**
-![Email](images/email.PNG)
-
-**Preferences Page**
-![Homepage](images/choicepage.PNG)
-
-**Result Page**
-![Resultpage](images/resultpage.PNG)
-
 ### Technology used:
 * JavaScript
 * jQuery
